@@ -8,8 +8,6 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class RaioBeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RaioBeApplication.class, args);
-
 		Dotenv dotenv = Dotenv.configure().load();
 
 		checkEnvVariable(dotenv, "SPRING_DATASOURCE_URL");
@@ -22,7 +20,7 @@ public class RaioBeApplication {
 		System.setProperty("SPRING_DATASOURCE_PASSWORD", dotenv.get("SPRING_DATASOURCE_PASSWORD"));
 		System.setProperty("SPRING_DATASOURCE_DRIVER_CLASS_NAME", dotenv.get("SPRING_DATASOURCE_DRIVER_CLASS_NAME"));
 
-		// SpringApplication.run(RaioBeApplication.class, args);
+		SpringApplication.run(RaioBeApplication.class, args);
 		System.out.println("Se ha iniciado con éxito.");
 	}
 
