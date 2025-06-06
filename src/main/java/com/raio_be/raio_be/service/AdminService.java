@@ -13,10 +13,10 @@ public interface AdminService {
 
    List<AdminDTO> getAllAdmins();
 
-     AdminDTO getAdminById(int id);
+     AdminDTO getAdminById(Integer id);
 
-    AdminDTO updateAdmin(int id, AdminDTO adminDTO);
+    AdminDTO updateAdmin(Integer id, AdminDTO adminDTO);
 
-    void deleteAdmin(int id);
+    void deleteAdmin(Integer id);
     
 } 

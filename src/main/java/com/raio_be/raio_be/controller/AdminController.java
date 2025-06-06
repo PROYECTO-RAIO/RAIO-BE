@@ -21,7 +21,7 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping
-    public AdminDTO crearAdmin(@RequestBody AdminDTO adminDTO) {
+    public AdminDTO createAdmin(@RequestBody AdminDTO adminDTO) {
         return adminService.createAdmin(adminDTO);
     }
 
@@ -31,17 +31,17 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
-    public AdminDTO getAdminById(@PathVariable int id) {
+    public AdminDTO getAdminById(@PathVariable Integer id) {
         return adminService.getAdminById(id);
     }
 
     @PutMapping("/{id}")
-    public AdminDTO updateAdmin(@PathVariable int id, @RequestBody AdminDTO adminDTO) {
+    public AdminDTO updateAdmin(@PathVariable Integer id, @RequestBody AdminDTO adminDTO) {
         return adminService.updateAdmin(id, adminDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAdmin(@PathVariable int id) {
+    public void deleteAdmin(@PathVariable Integer id) {
         adminService.deleteAdmin(id);
     }
 }

@@ -22,7 +22,8 @@ import lombok.Setter;
 public class Admin {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  @Column(nullable = false, updatable = false)
+  private Integer id;
 
   @Column(nullable = false)
   private String nombreUsuarie;

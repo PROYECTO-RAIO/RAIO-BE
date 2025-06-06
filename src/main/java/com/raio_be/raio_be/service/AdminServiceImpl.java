@@ -50,14 +50,14 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public AdminDTO getAdminById(int id) {
+  public AdminDTO getAdminById(Integer id) {
     Admin admin = adminRepository.findById(id).orElseThrow(() -> new RuntimeException("No se encontró el admin"));
     return toDto(admin);
 
   }
 
   @Override
-  public AdminDTO updateAdmin(int id, AdminDTO adminDTO) {
+  public AdminDTO updateAdmin(Integer id, AdminDTO adminDTO) {
     Admin existingAdmin = adminRepository.findById(id).orElseThrow(() -> new RuntimeException("Admin no encontrado"));
 
     existingAdmin.setNombreUsuarie(adminDTO.getNombreUsuarie());
@@ -69,7 +69,7 @@ public class AdminServiceImpl implements AdminService {
   }
 
   @Override
-  public void deleteAdmin(int id) {
+  public void deleteAdmin(Integer id) {
     if (!adminRepository.existsById(id)) {
       throw new RuntimeException("Admin no encontrado");
     }
