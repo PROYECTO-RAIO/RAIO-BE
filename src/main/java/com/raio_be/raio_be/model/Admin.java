@@ -2,13 +2,26 @@ package com.raio_be.raio_be.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Admin {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @Column(nullable = false)
@@ -19,42 +32,5 @@ public class Admin {
 
   @Column(nullable = false)
   private String email;
-
-  public Admin() {
-
-  }
-
-
-  public int getId() {
-    return this.id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public String getNombreUsuarie() {
-    return this.nombreUsuarie;
-  }
-
-  public void setNombreUsuarie(String nombreUsuarie) {
-    this.nombreUsuarie = nombreUsuarie;
-  }
-
-  public String getContraseña() {
-    return this.contraseña;
-  }
-
-  public void setContraseña(String contraseña) {
-    this.contraseña = contraseña;
-  }
-
-  public String getEmail() {
-    return this.email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
 
 }
