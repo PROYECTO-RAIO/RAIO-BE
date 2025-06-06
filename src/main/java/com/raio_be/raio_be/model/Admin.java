@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table
-public class Admins {
+public class Admin {
   @Id
   private int id;
 
@@ -20,7 +20,7 @@ public class Admins {
   @Column(nullable = false)
   private String email;
 
-  public Admins() {
+  public Admin() {
 
   }
 

@@ -18,35 +18,35 @@ public class CategoriaController {
     private CategoriaService categoriaService;
 
     @GetMapping
-    public List<CategoriaDTO> listar() {
-        return categoriaService.listar()
+    public List<CategoriaDTO> getAllCategorias() {
+        return categoriaService.getAllCategorias()
                 .stream()
                 .map(CategoriaMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public CategoriaDTO obtenerPorId(@PathVariable Long id) {
-        return categoriaService.obtenerPorId(id)
+    public CategoriaDTO getCategoriaById(@PathVariable Long id) {
+        return categoriaService.getCategoriaById(id)
                 .map(CategoriaMapper::toDto)
                 .orElse(null);
     }
 
     @PostMapping
-    public CategoriaDTO guardar(@RequestBody CategoriaDTO dto) {
+    public CategoriaDTO saveCategoria(@RequestBody CategoriaDTO dto) {
         Categoria categoria = CategoriaMapper.toEntity(dto);
-        Categoria guardada = categoriaService.guardar(categoria);
+        Categoria guardada = categoriaService.saveCategoria(categoria);
         return CategoriaMapper.toDto(guardada);
     }
 
     @PutMapping("/{id}")
-    public CategoriaDTO actualizar(@PathVariable Long id, @RequestBody CategoriaDTO dto) {
-        Categoria actualizada = categoriaService.actualizar(id, CategoriaMapper.toEntity(dto));
+    public CategoriaDTO updateCategoria(@PathVariable Long id, @RequestBody CategoriaDTO dto) {
+        Categoria actualizada = categoriaService.updateCategoria(id, CategoriaMapper.toEntity(dto));
         return actualizada != null ? CategoriaMapper.toDto(actualizada) : null;
     }
 
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        categoriaService.eliminar(id);
+    public void deleteCategoria(@PathVariable Long id) {
+        categoriaService.deleteCategoria(id);
     }
 }

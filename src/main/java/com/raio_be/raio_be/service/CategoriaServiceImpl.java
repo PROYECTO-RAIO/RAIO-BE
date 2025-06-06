@@ -16,22 +16,22 @@ public class CategoriaServiceImpl implements CategoriaService {
     private CategoriaRepository categoriaRepository;
 
     @Override
-    public List<Categoria> listar() {
+    public List<Categoria> getAllCategorias() {
         return categoriaRepository.findAll();
     }
 
     @Override
-    public Optional<Categoria> obtenerPorId(Long id) {
+    public Optional<Categoria> getCategoriaById(Long id) {
         return categoriaRepository.findById(id);
     }
 
     @Override
-    public Categoria guardar(Categoria categoria) {
+    public Categoria saveCategoria(Categoria categoria) {
         return categoriaRepository.save(categoria);
     }
 
     @Override
-    public Categoria actualizar(Long id, Categoria categoria) {
+    public Categoria updateCategoria(Long id, Categoria categoria) {
         if (!categoriaRepository.existsById(id)) {
             return null;
         }
@@ -40,7 +40,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     }
 
     @Override
-    public void eliminar(Long id) {
+    public void deleteCategoria(Long id) {
         categoriaRepository.deleteById(id);
     }
 }

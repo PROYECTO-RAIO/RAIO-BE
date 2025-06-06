@@ -6,13 +6,13 @@ import com.raio_be.raio_be.model.Categoria;
 
 public interface CategoriaService {
 
-    List<Categoria> listar();
+    List<Categoria> getAllCategorias();
 
-    Optional<Categoria> obtenerPorId(Long id);
+    Optional<Categoria> getCategoriaById(Long id);
 
-    Categoria guardar(Categoria categoria);
+    Categoria saveCategoria(Categoria categoria);
 
-    Categoria actualizar(Long id, Categoria categoria);
+    Categoria updateCategoria(Long id, Categoria categoria);
 
-    void eliminar(Long id);
+    void deleteCategoria(Long id);
 }
