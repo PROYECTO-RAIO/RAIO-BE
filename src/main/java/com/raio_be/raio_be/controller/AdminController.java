@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.raio_be.raio_be.DTO.AdminDTO;
 import com.raio_be.raio_be.service.AdminService;
+
+import jakarta.validation.Valid;
 @RestController
 @RequestMapping("api/v1/admins")
 public class AdminController {
@@ -21,7 +23,7 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping
-    public AdminDTO createAdmin(@RequestBody AdminDTO adminDTO) {
+    public AdminDTO createAdmin(@Valid @RequestBody AdminDTO adminDTO) {
         return adminService.createAdmin(adminDTO);
     }
 
