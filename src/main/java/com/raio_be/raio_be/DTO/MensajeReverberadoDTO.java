@@ -2,6 +2,8 @@ package com.raio_be.raio_be.DTO;
 
 import java.time.LocalDateTime;
 
+import com.raio_be.raio_be.model.Categoria;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -35,8 +37,8 @@ public class MensajeReverberadoDTO {
   private LocalDateTime timestamp;
 
   @NotNull(message = "Debe especificar el ID del mensaje original")
-  private Integer mensajeOriginal;
+  private String mensajeOriginal;
 
   @NotNull(message = "Debe especificar una categoría")
-  private Integer categoria;
+  private Categoria categoria;
 }

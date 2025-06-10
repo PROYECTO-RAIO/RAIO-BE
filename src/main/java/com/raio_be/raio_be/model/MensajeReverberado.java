@@ -61,10 +61,10 @@ public class MensajeReverberado {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "id_mensaje_original", nullable = false)
   @NotNull(message = "Debe especificar el ID del mensaje original")
-  private Integer mensajeOriginal;
+  private String mensajeOriginal;
 
   @OneToOne(optional = false, fetch = FetchType.LAZY)
   @JoinColumn(name = "id_categoria", nullable = false)
   @NotNull(message = "Debe especificar una categoría")
-  private Integer categoria;
+  private Categoria categoria;
 }
