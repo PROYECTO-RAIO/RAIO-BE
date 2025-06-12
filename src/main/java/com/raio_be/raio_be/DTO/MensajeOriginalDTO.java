@@ -1,8 +1,8 @@
 package com.raio_be.raio_be.DTO;
 
 import java.sql.Timestamp;
+import java.util.List;
 
-import com.raio_be.raio_be.model.MensajeReverberado;
 
 import lombok.*;
 
@@ -17,5 +17,5 @@ public class MensajeOriginalDTO {
     private String cuerpoMensajeOriginal;
     private String adjuntoMensajeOriginal;
     private Timestamp timestamp;
-    private MensajeReverberado mensajeReverberado;
+    private List<MensajeReverberadoDTO> mensajesReverberados;
 }
