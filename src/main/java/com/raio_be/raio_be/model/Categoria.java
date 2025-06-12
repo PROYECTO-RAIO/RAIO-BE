@@ -1,6 +1,6 @@
 package com.raio_be.raio_be.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -45,10 +45,10 @@ public class Categoria {
     private boolean estadoDeActividad;
 
     @Column
-    private LocalDateTime fechaInicio;
+    private LocalDate fechaInicio;
 
     @Column
-    private LocalDateTime fechaFinal;
+    private LocalDate fechaFinal;
 
     @Column
     private String listaCorreoUrl;

@@ -1,7 +1,9 @@
 package com.raio_be.raio_be.DTO;
 
 import lombok.*;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,8 +20,8 @@ public class CategoriaDTO {
     private String totalLimitado;
     private String totalReverberaciones;
     private boolean estadoDeActividad;
-    private LocalDateTime fechaInicio;
-    private LocalDateTime fechaFinal;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFinal;
     private String listaCorreoUrl;
     private String archivoUrl;
     private boolean demora;

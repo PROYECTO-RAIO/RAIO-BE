@@ -44,7 +44,7 @@ public class MensajeOriginal {
     @Column 
     private Timestamp timestamp;
     @ManyToOne
-    @JoinColumn(name = "id_mensaje_reverberado", nullable = false)
+    @JoinColumn(name = "id_mensaje_reverberado")
     private MensajeReverberado mensajeReverberado;
 
 }
