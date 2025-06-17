@@ -20,6 +20,7 @@ public class CategoriaDTO {
     private String totalLimitado;
     private String totalReverberaciones;
     private boolean estadoDeActividad;
+    private boolean temporalidad;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
     private String listaCorreoUrl;
