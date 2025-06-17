@@ -53,14 +53,15 @@ public class Categoria {
     @NotNull(message = "El estado de actividad es obligatorio")
     private boolean estadoDeActividad;
 
+    private boolean temporalidad;
+
     @FutureOrPresent(message = "La fecha de inicio no puede ser en el pasado")
     private LocalDate fechaInicio;
 
     @FutureOrPresent(message = "La fecha final no puede ser en el pasado")
     private LocalDate fechaFinal;
 
-    @URL(message = "Debe ser una URL válida")
-    @Pattern(regexp = "^(https?|ftp)://.*$", message = "URL inválida")
+    @Email(message = "Debe ser un email válido")
     private String listaCorreoUrl;
 
     @URL(message = "Debe ser una URL válida")
