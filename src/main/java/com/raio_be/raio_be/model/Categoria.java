@@ -1,7 +1,16 @@
 package com.raio_be.raio_be.model;
 
 import java.time.LocalDate;
+
+import org.hibernate.validator.constraints.URL;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
@@ -20,43 +29,44 @@ public class Categoria {
     @Column(name = "id_mensaje_reverberado", nullable = false)
     private int mensajeReverberado;
 
-    @Column(nullable = false)
+    @Size(max = 50)
+    @Column(nullable = false, unique = true)
     private String tituloCategoria;
 
-    @Column
+    @Size(max = 1000)
     private String descripcionCategoria;
 
-    @Column
+    @Size(max = 100)
     private String autorCategoria;
 
-    @Column
+    @Email(message = "Debe ser un email válido")
+    @Column(nullable = false)
     private String autorEmailCategoria;
 
-    @Column
     private String frecuenciaCategoria;
 
-    @Column
     private String totalLimitado;
 
-    @Column
+    @Min(value = 1, message = "Debe ser al menos 1")
     private String totalReverberaciones;
 
-    @Column
+    @NotNull(message = "El estado de actividad es obligatorio")
     private boolean estadoDeActividad;
 
-    @Column
+    @FutureOrPresent(message = "La fecha de inicio no puede ser en el pasado")
     private LocalDate fechaInicio;
 
-    @Column
+    @FutureOrPresent(message = "La fecha final no puede ser en el pasado")
     private LocalDate fechaFinal;
 
-    @Column
+    @URL(message = "Debe ser una URL válida")
+    @Pattern(regexp = "^(https?|ftp)://.*$", message = "URL inválida")
     private String listaCorreoUrl;
 
-    @Column
+    @URL(message = "Debe ser una URL válida")
+    @Pattern(regexp = "^(https?|ftp)://.*$", message = "URL inválida")
     private String archivoUrl;
 
-    @Column
     private boolean demora;
 
     @Column
