@@ -61,7 +61,7 @@ public class Categoria {
     private LocalDate fechaFinal;
 
     @Email(message = "Debe ser un email válido")
-    private String listaCorreoUrl;
+    private String listaCorreo;
 
     @URL(message = "Debe ser una URL válida")
     @Pattern(regexp = "^(https?|ftp)://.*$", message = "URL inválida")

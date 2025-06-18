@@ -26,7 +26,7 @@ public class CategoriaDTO {
     private boolean temporalidad;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
-    private String listaCorreoUrl;
+    private String listaCorreo;
     private String archivoUrl;
     private boolean demora;
     private Integer periodoRetraso;
