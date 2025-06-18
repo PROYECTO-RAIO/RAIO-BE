@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,10 +54,6 @@ public class AdminController {
 
     @PostMapping
     public AdminDTO createAdmin(@Valid @RequestBody AdminDTO adminDTO) {
-        //Elinar este código para prevenir 2do hasheo
-        // String rawPassword = adminDTO.getContraseña();
-        // String encodedPassword = passwordEncoder.encode(rawPassword);
-        // adminDTO.setContraseña(encodedPassword);
         return adminService.createAdmin(adminDTO);
     }
 
