@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.raio_be.raio_be.DTO.AdminDTO;
@@ -18,28 +19,45 @@ import com.raio_be.raio_be.service.AdminService;
 public class CustomAuthenticationManager implements AuthenticationManager {
 
     private AdminService adminService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    public CustomAuthenticationManager(AdminService adminService, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public CustomAuthenticationManager(AdminService adminService, PasswordEncoder passwordEncoder){
         this.adminService = adminService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.passwordEncoder = passwordEncoder;
+}
+@Override
+public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    String email = authentication.getName();
+    String rawPassword = authentication.getCredentials().toString();
+
+    AdminDTO admin = adminService.getAdminByEmail(email);
+    if (!passwordEncoder.matches(rawPassword, admin.getContraseña())) {
+        throw new BadCredentialsException("Contraseña incorrecta");
     }
 
-    @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String email = authentication.getName(); 
-        String rawPassword = authentication.getCredentials().toString();
+    return new UsernamePasswordAuthenticationToken(
+        email,
+        admin.getContraseña(),
+        Collections.singletonList(new SimpleGrantedAuthority("USER"))
+    );
+}
+    //CODE con contraseñas encrytadas
+    // @Override
+    // public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    //     String email = authentication.getName(); 
+    //     String rawPassword = authentication.getCredentials().toString();
 
-        AdminDTO admin = adminService.getAdminByEmail(email);
-        if (!bCryptPasswordEncoder.matches(rawPassword, admin.getContraseña())) {
-            throw new BadCredentialsException("Contraseña incorrecta");
-        }
+    //     AdminDTO admin = adminService.getAdminByEmail(email);
+    //     if (!bCryptPasswordEncoder.matches(rawPassword, admin.getContraseña())) {
+    //         throw new BadCredentialsException("Contraseña incorrecta");
+    //     }
 
-        return new UsernamePasswordAuthenticationToken(
-            email,
-            admin.getContraseña(),
-            Collections.singletonList(new SimpleGrantedAuthority("USER"))
-        );
-    }
+    //     return new UsernamePasswordAuthenticationToken(
+    //         email,
+    //         admin.getContraseña(),
+    //         Collections.singletonList(new SimpleGrantedAuthority("USER"))
+    //     );
+    // }
+
 
 }

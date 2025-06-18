@@ -1,23 +1,40 @@
 package com.raio_be.raio_be.service;
 
-import java.util.Date;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import org.springframework.stereotype.Service;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.util.Date;
 
 @Service
 public class TokenService {
 
-    private final String SECRET_KEY = "raio_super_secret_key"; 
+    private static final String SECRET = "raio_secret_key"; // use same as SecurityConstants
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours
 
     public String generateToken(String email) {
-        long expirationTimeMs = 1000 * 60 * 60 * 24; 
+        return JWT.create()
+                .withSubject(email)
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .sign(Algorithm.HMAC512(SECRET));
+    }
 
-        return Jwts.builder()
-            .setSubject(email)
-            .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + expirationTimeMs))
-            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-            .compact();
+    public String getEmailFromToken(String token) {
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC512(SECRET)).build();
+        DecodedJWT decodedJWT = verifier.verify(token);
+        return decodedJWT.getSubject();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            JWT.require(Algorithm.HMAC512(SECRET)).build().verify(token);
+            return true;
+        } catch (JWTVerificationException e) {
+            return false;
+        }
     }
 }

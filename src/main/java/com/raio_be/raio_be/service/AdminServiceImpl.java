@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.raio_be.raio_be.DTO.AdminDTO;
@@ -17,7 +18,7 @@ public class AdminServiceImpl implements AdminService {
   @Autowired
   private AdminRepository adminRepository;
   @Autowired
-  private BCryptPasswordEncoder bCryptPasswordEncoder;
+  private PasswordEncoder passwordEncoder;
 
   public static AdminDTO toDto(Admin admin) {
     return AdminDTO.builder()
@@ -40,7 +41,7 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public AdminDTO createAdmin(AdminDTO adminDTO) {
     Admin admin = toEntity(adminDTO);
-    admin.setContraseña(bCryptPasswordEncoder.encode(admin.getContraseña()));
+    admin.setContraseña(passwordEncoder.encode(admin.getContraseña()));
     Admin savedAdmin = adminRepository.save(admin);
     return toDto(savedAdmin);
   }
@@ -65,7 +66,7 @@ public class AdminServiceImpl implements AdminService {
     Admin existingAdmin = adminRepository.findById(id).orElseThrow(() -> new RuntimeException("Admin no encontrado"));
 
     existingAdmin.setNombreUsuarie(adminDTO.getNombreUsuarie());
-    existingAdmin.setContraseña(bCryptPasswordEncoder.encode(adminDTO.getContraseña()));
+    existingAdmin.setContraseña(passwordEncoder.encode(adminDTO.getContraseña()));
     existingAdmin.setEmail(adminDTO.getEmail());
 
     Admin updatedAdmin = adminRepository.save(existingAdmin);

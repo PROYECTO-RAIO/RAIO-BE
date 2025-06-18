@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.raio_be.raio_be.DTO.AdminDTO;
+import com.raio_be.raio_be.DTO.LoginDTO;
 import com.raio_be.raio_be.model.Admin;
 import com.raio_be.raio_be.repository.AdminRepository;
 import com.raio_be.raio_be.service.AdminService;
@@ -28,18 +29,36 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "*")
 
 public class AdminController {
-    @Autowired
-    private AdminService adminService;
-    @Autowired
-    private AdminRepository adminRepository;
-    @Autowired
-    private TokenService tokenService;
+    // @Autowired
+    // private AdminService adminService;
+    // @Autowired
+    // private AdminRepository adminRepository;
+    // @Autowired
+    // private TokenService tokenService;
+
+        private final AdminService adminService;
+        private final AdminRepository adminRepository;
+        private final TokenService tokenService;
+        private final PasswordEncoder passwordEncoder;
+        
+        public AdminController(
+        AdminService adminService,
+        AdminRepository adminRepository,
+        TokenService tokenService,
+        PasswordEncoder passwordEncoder
+    ) {
+        this.adminService = adminService;
+        this.adminRepository = adminRepository;
+        this.tokenService = tokenService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping
     public AdminDTO createAdmin(@Valid @RequestBody AdminDTO adminDTO) {
-        String rawPassword = adminDTO.getContraseña();
-        String encodedPassword = passwordEncoder.encode(rawPassword);
-        adminDTO.setContraseña(encodedPassword);
+        //Elinar este código para prevenir 2do hasheo
+        // String rawPassword = adminDTO.getContraseña();
+        // String encodedPassword = passwordEncoder.encode(rawPassword);
+        // adminDTO.setContraseña(encodedPassword);
         return adminService.createAdmin(adminDTO);
     }
 
@@ -64,17 +83,20 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Admin loginData) {
+    public Map<String, String> login(@RequestBody LoginDTO loginData) {
         Optional<Admin> optionalAdmin = adminRepository.findByEmail(loginData.getEmail());
 
         if (optionalAdmin.isPresent()) {
             Admin admin = optionalAdmin.get();
+
+        System.out.println("Login attempt for email: " + loginData.getEmail());
+        System.out.println("Raw password: " + loginData.getContraseña());
+        System.out.println("Hashed password in DB: " + admin.getContraseña());
             
-            if (passwordEncoder.matches(loginData.getContraseña(), admin.getContraseña())
-            || admin.getContraseña().equals(loginData.getContraseña())) {
+            if (passwordEncoder.matches(loginData.getContraseña(), admin.getContraseña())) {
             
                 String token = tokenService.generateToken(admin.getEmail());
-            return Map.of(
+                return Map.of(
                 "message", "Login exitoso",
                 "token", token
             );
@@ -85,11 +107,12 @@ public class AdminController {
         return Map.of("error", "No existe el usuario con ese email");
     }
     }
-    
-    private final PasswordEncoder passwordEncoder;
 
-    public AdminController(AdminService adminService, PasswordEncoder passwordEncoder) {
-        this.adminService = adminService;
-        this.passwordEncoder = passwordEncoder;
-}
+//         @Autowired
+//         private PasswordEncoder passwordEncoder;
+
+//     public AdminController(AdminService adminService, PasswordEncoder passwordEncoder) {
+//         this.adminService = adminService;
+//         this.passwordEncoder = passwordEncoder;
+// }
 }
