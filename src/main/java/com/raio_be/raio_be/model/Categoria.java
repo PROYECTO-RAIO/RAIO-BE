@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.URL;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -48,7 +47,6 @@ public class Categoria {
 
     private String totalLimitado;
 
-    @Min(value = 1, message = "Debe ser al menos 1")
     private String totalReverberaciones;
 
     @NotNull(message = "El estado de actividad es obligatorio")
