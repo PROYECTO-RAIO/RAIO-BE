@@ -35,7 +35,7 @@ public class Admin {
 
   @Column(nullable = false)
   @NotBlank(message = "La contraseña no puede estar vacía")
-  @Size(min = 8, max = 12, message = "La contraseña debe tener entre 8 y 12 caracteres")
+  // @Size(min = 8, max = 12, message = "La contraseña debe tener entre 8 y 12 caracteres")
   private String contraseña;
 
   @Column(nullable = false)
