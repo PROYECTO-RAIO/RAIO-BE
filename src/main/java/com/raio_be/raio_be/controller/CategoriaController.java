@@ -4,6 +4,9 @@ import com.raio_be.raio_be.DTO.CategoriaDTO;
 import com.raio_be.raio_be.mapper.CategoriaMapper;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.service.CategoriaService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,14 +36,14 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public CategoriaDTO saveCategoria(@RequestBody CategoriaDTO dto) {
+    public CategoriaDTO saveCategoria(@Valid @RequestBody CategoriaDTO dto) {
         Categoria categoria = CategoriaMapper.toEntity(dto);
         Categoria save = categoriaService.saveCategoria(categoria);
         return CategoriaMapper.toDto(save);
     }
 
     @PutMapping("/{id}")
-    public CategoriaDTO updateCategoria(@PathVariable Long id, @RequestBody CategoriaDTO dto) {
+    public CategoriaDTO updateCategoria(@PathVariable Long id, @Valid @RequestBody CategoriaDTO dto) {
         Categoria update = categoriaService.updateCategoria(id, CategoriaMapper.toEntity(dto));
         return update != null ? CategoriaMapper.toDto(update) : null;
     }

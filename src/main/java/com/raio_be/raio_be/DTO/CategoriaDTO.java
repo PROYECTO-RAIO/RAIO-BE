@@ -7,6 +7,9 @@ import java.util.List;
 
 import com.raio_be.raio_be.model.MensajeReverberado;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,9 +18,11 @@ import com.raio_be.raio_be.model.MensajeReverberado;
 public class CategoriaDTO {
     private Long id;
     private List<MensajeReverberado> mensajesReverberados;
+    @NotBlank
     private String tituloCategoria;
     private String descripcionCategoria;
     private String autorCategoria;
+    @Email
     private String autorEmailCategoria;
     private String frecuenciaCategoria;
     private String totalLimitado;
@@ -27,6 +32,7 @@ public class CategoriaDTO {
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
     private String listaCorreo;
+    @Email
     private String archivoUrl;
     private boolean demora;
     private Integer periodoRetraso;
