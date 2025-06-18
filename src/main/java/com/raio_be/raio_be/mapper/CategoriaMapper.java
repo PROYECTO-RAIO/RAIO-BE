@@ -8,7 +8,7 @@ public class CategoriaMapper {
     public static CategoriaDTO toDto(Categoria categoria) {
         return CategoriaDTO.builder()
                 .id(categoria.getId())
-                .mensajeReverberado(categoria.getMensajeReverberado())
+                /* .mensajeReverberado(categoria.getMensajeReverberado()) */
                 .tituloCategoria(categoria.getTituloCategoria())
                 .descripcionCategoria(categoria.getDescripcionCategoria())
                 .autorCategoria(categoria.getAutorCategoria())
@@ -30,7 +30,7 @@ public class CategoriaMapper {
     public static Categoria toEntity(CategoriaDTO dto) {
         return Categoria.builder()
                 .id(dto.getId())
-                .mensajeReverberado(dto.getMensajeReverberado())
+                /* .mensajeReverberado(dto.getMensajeReverberado()) */
                 .tituloCategoria(dto.getTituloCategoria())
                 .descripcionCategoria(dto.getDescripcionCategoria())
                 .autorCategoria(dto.getAutorCategoria())

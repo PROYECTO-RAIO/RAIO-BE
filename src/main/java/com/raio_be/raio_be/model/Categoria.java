@@ -1,6 +1,7 @@
 package com.raio_be.raio_be.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.hibernate.validator.constraints.URL;
 
@@ -26,8 +27,8 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id_mensaje_reverberado", nullable = false)
-    private int mensajeReverberado;
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MensajeReverberado> mensajesReverberados;
 
     @Size(max = 50)
     @Column(nullable = false, unique = true)

@@ -2,6 +2,8 @@ package com.raio_be.raio_be.model;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -62,5 +64,6 @@ public class MensajeReverberado {
   @OneToOne(optional = false)
   @JoinColumn(name = "categoria", nullable = false)
   @NotNull(message = "Debe especificar una categoría")
+  @JsonBackReference
   private Categoria categoria;
 }
