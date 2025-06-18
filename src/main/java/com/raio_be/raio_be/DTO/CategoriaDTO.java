@@ -3,6 +3,9 @@ package com.raio_be.raio_be.DTO;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import com.raio_be.raio_be.model.MensajeReverberado;
 
 
 @NoArgsConstructor
@@ -11,7 +14,7 @@ import java.time.LocalDate;
 @Data
 public class CategoriaDTO {
     private Long id;
-    private int mensajeReverberado;
+    private List<MensajeReverberado> mensajesReverberados;
     private String tituloCategoria;
     private String descripcionCategoria;
     private String autorCategoria;
@@ -23,8 +26,8 @@ public class CategoriaDTO {
     private boolean temporalidad;
     private LocalDate fechaInicio;
     private LocalDate fechaFinal;
-    private String listaCorreoUrl;
+    private String listaCorreo;
     private String archivoUrl;
     private boolean demora;
-    private String periodoRetraso;
+    private Integer periodoRetraso;
 }

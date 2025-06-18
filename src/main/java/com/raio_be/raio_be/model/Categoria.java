@@ -1,13 +1,13 @@
 package com.raio_be.raio_be.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.hibernate.validator.constraints.URL;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -26,8 +26,8 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "id_mensaje_reverberado", nullable = false)
-    private int mensajeReverberado;
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MensajeReverberado> mensajesReverberados;
 
     @Size(max = 50)
     @Column(nullable = false, unique = true)
@@ -47,7 +47,6 @@ public class Categoria {
 
     private String totalLimitado;
 
-    @Min(value = 1, message = "Debe ser al menos 1")
     private String totalReverberaciones;
 
     @NotNull(message = "El estado de actividad es obligatorio")
@@ -62,7 +61,7 @@ public class Categoria {
     private LocalDate fechaFinal;
 
     @Email(message = "Debe ser un email válido")
-    private String listaCorreoUrl;
+    private String listaCorreo;
 
     @URL(message = "Debe ser una URL válida")
     @Pattern(regexp = "^(https?|ftp)://.*$", message = "URL inválida")
@@ -71,5 +70,5 @@ public class Categoria {
     private boolean demora;
 
     @Column
-    private String periodoRetraso;
+    private Integer periodoRetraso;
 }
