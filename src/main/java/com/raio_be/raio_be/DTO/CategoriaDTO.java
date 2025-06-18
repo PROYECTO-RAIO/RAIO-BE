@@ -26,5 +26,5 @@ public class CategoriaDTO {
     private String listaCorreoUrl;
     private String archivoUrl;
     private boolean demora;
-    private String periodoRetraso;
+    private Integer periodoRetraso;
 }

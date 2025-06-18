@@ -71,5 +71,5 @@ public class Categoria {
     private boolean demora;
 
     @Column
-    private String periodoRetraso;
+    private Integer periodoRetraso;
 }
