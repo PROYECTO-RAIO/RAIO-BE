@@ -24,12 +24,44 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        //TRIAL - Remove all atuth
-        return http
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-        .build();
+        JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter(customAuthenticationManager);
+        authenticationFilter.setFilterProcessesUrl("/api/v1/admins/login");
 
+        http
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(request -> request
+                // Public endpoints
+                .requestMatchers("/h2/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/categorias/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/admins/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/admins").permitAll() // Temporary: registration
+
+                .requestMatchers("/api/v1/mensajes-originales/**").permitAll()
+                .requestMatchers("/api/v1/mensajes-reverberados/**").permitAll()
+
+                .requestMatchers(HttpMethod.POST, "/api/v1/categorias").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/api/v1/categorias/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/categorias/**").authenticated()
+
+                .anyRequest().permitAll()
+            )
+            .addFilter(authenticationFilter)
+            .addFilterAfter(new JWTAuthorizationFilter(), JWTAuthenticationFilter.class)
+            .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        return http.build();
+    }
+}
+        
+        
+        //TRIAL - Remove all atuth
+        // return http
+        // .csrf(csrf -> csrf.disable())
+        // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+        // .build();
+
+        //OLD CODE - bit problematic
         // JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter(customAuthenticationManager);
         // authenticationFilter.setFilterProcessesUrl("/api/v1/admins/login");
 
@@ -58,5 +90,3 @@ public class SecurityConfig {
     //         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
     // return http.build();    
     // }
-}
-}
