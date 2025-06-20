@@ -1,6 +1,7 @@
 package com.raio_be.raio_be.controller;
 
 import com.raio_be.raio_be.DTO.CategoriaDTO;
+import com.raio_be.raio_be.exception.CategoriaNotFoundException;
 import com.raio_be.raio_be.mapper.CategoriaMapper;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.service.CategoriaService;
@@ -30,9 +31,9 @@ public class CategoriaController {
 
     @GetMapping("/{id}")
     public CategoriaDTO getCategoriaById(@PathVariable Long id) {
-        return categoriaService.getCategoriaById(id)
-                .map(CategoriaMapper::toDto)
-                .orElse(null);
+        Categoria categoria = categoriaService.getCategoriaById(id)
+        .orElseThrow(() -> new CategoriaNotFoundException(id));
+    return CategoriaMapper.toDto(categoria);
     }
 
     @PostMapping
