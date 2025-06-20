@@ -1,6 +1,7 @@
 package com.raio_be.raio_be.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.validator.constraints.URL;
@@ -31,7 +32,8 @@ public class Categoria {
     @Column(name = "mensajes_reverberados")
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<MensajeReverberado> mensajesReverberados;
+    @Builder.Default
+    private List<MensajeReverberado> mensajesReverberados = new ArrayList<>();
 
     @Size(max = 50)
     @Column(nullable = false, unique = true)

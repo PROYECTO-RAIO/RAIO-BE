@@ -5,7 +5,6 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.raio_be.raio_be.model.MensajeReverberado;
 
 /* import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +16,7 @@ import jakarta.validation.constraints.NotBlank;
 @Data
 public class CategoriaDTO {
     private Long id;
-    private List<MensajeReverberado> mensajesReverberados;
+    private List<MensajeReverberadoDTO> mensajesReverberados; 
 /*     @NotBlank */
     private String tituloCategoria;
     private String descripcionCategoria;
