@@ -1,8 +1,10 @@
 package com.raio_be.raio_be.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,8 +61,9 @@ public class MensajeOriginalController {
     }
     
     @DeleteMapping("/{id}")
-    public void deleteMensajeOriginal(@PathVariable Long id) {
+    public ResponseEntity<?> deleteMensajeOriginal(@PathVariable Long id) {
         mensajeOriginalService.deleteMensajeOriginal(id);
+        return ResponseEntity.ok(Map.of("mensaje", "Mensaje original con ID " + id + " eliminado correctamente"));
     }
     
 }

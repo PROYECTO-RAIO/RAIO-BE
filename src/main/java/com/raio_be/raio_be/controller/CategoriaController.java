@@ -9,9 +9,11 @@ import com.raio_be.raio_be.service.CategoriaService;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -50,7 +52,8 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCategoria(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCategoria(@PathVariable Long id) {
         categoriaService.deleteCategoria(id);
+        return ResponseEntity.ok(Map.of("mensaje", "Categoría con ID " + id + " eliminada correctamente"));
     }
 }

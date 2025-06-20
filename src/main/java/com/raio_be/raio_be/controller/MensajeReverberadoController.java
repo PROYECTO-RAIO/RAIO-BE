@@ -16,6 +16,7 @@ import com.raio_be.raio_be.service.MensajeReverberadoService;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/mensajes-reverberados")
@@ -51,8 +52,8 @@ public class MensajeReverberadoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMensajeReverberado(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteMensajeReverberado(@PathVariable Integer id) {
         mensajeReverberadoService.deleteMensajeReverberado(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(Map.of("mensaje", "Reverberación con ID " + id + " eliminada correctamente"));
     }
 }
