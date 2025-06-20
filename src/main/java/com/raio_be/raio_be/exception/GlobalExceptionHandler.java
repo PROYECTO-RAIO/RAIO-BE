@@ -2,10 +2,12 @@ package com.raio_be.raio_be.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -62,6 +64,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleMensajeReverberadoNotFound(MensajeReverberadoNotFoundException ex) {
         ApiError error = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiError> handleValidationErrors(MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                .toList();
+
+        String message = String.join("; ", errors);
+
+        return buildResponse(HttpStatus.BAD_REQUEST, message);
     }
 
     private ResponseEntity<ApiError> buildResponse(HttpStatus status, String message) {
