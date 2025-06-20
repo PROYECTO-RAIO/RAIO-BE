@@ -53,7 +53,7 @@ JWT_SECRET=clave_segura
 
 Ejemplo de entidad `Reverberation`:
 
-```java
+
 public class Reverberation {
     private UUID id;
     private String title;
@@ -98,3 +98,13 @@ Asegúrate de tener configurada la base de datos antes de iniciar el servicio.
 
 📝 Licencia
 Este proyecto se desarrolla como parte de una iniciativa artística/educativa sin fines comerciales.
+
+## 👩‍💻 Equipo del Proyecto RAIO
+
+Este proyecto ha sido desarrollado por un equipo multidisciplinar de mujeres apasionadas por la tecnología:
+
+- [**Kat Leverton**](https://www.linkedin.com/in/kat-leverton/) — Desarrolladora
+- [**Carolina Más**](https://www.linkedin.com/in/carolina-mas/) — Desarrolladora
+- [**Mariona Cuyàs**](https://www.linkedin.com/in/mariona-cuyas/) — Product Owner & Desarrolladora
+- [**Karisha Melendez**](https://www.linkedin.com/in/karisssha/) — Desarrolladora
+- [**Marta Ibarra**](https://www.linkedin.com/in/marta-ibarra-cumbrero/) — Scrum Master & Desarrolladora
