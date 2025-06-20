@@ -21,7 +21,7 @@ Este backend expone APIs REST construidas con **Java 21** y **Spring Boot 3.5.0*
 - **Framework**: Spring Boot
 - **Persistencia**: JPA con base de datos relacional (ej. PostgreSQL o H2)
 - **Validación**: Bean Validation (javax)
-- **Seguridad**: JWT (si está implementado)
+- **Seguridad**: JWT
 - **Despliegue**: Docker y PM2 (según scripts observados)
 - **Build Tool**: Maven
 
@@ -31,11 +31,10 @@ Este backend expone APIs REST construidas con **Java 21** y **Spring Boot 3.5.0*
 
 A configurar en `application.properties` o archivo `.env` externo:
 
-DB_URL=jdbc:postgresql://localhost:5432/raio
-DB_USERNAME=usuario
+DB_URL=jdbc:postgresql://localhost:54**/raio
+DB_USERNAME=usuarie
 DB_PASSWORD=contraseña
 JWT_SECRET=clave_segura
-MAILMAN_API_KEY=clave_externa_para_reverberaciones
 
 ---
 
@@ -44,10 +43,9 @@ MAILMAN_API_KEY=clave_externa_para_reverberaciones
 | Método | Ruta                     | Descripción                                 |
 |--------|--------------------------|---------------------------------------------|
 | GET    | `/api/messages`          | Obtener mensajes paginados                  |
-| POST   | `/api/reverberations`    | Crear una reverberación                     |
-| GET    | `/admin/audit`           | Obtener registros de auditoría              |
+| POST   | `/api/reverberations`    | Crear una reverberación                     |      
 
-> Algunos endpoints pueden requerir autenticación JWT (si está habilitada).
+> Algunos endpoints pueden requerir autenticación JWT.
 
 ---
 
