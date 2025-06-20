@@ -46,12 +46,18 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error inesperado: " + ex.getMessage());
     }
 
+    @ExceptionHandler(CategoriaNotFoundException.class)
+    public ResponseEntity<ApiError> handleCategoriaNotFound(CategoriaNotFoundException ex) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
     private ResponseEntity<ApiError> buildResponse(HttpStatus status, String message) {
         ApiError error = ApiError.builder()
-            .status(status)
-            .message(message)
-            .timestamp(LocalDateTime.now())
-            .build();
+                .status(status)
+                .message(message)
+                .timestamp(LocalDateTime.now())
+                .build();
         return new ResponseEntity<>(error, status);
     }
 }

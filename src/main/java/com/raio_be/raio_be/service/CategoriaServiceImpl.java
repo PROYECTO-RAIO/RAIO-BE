@@ -1,5 +1,6 @@
 package com.raio_be.raio_be.service;
 
+import com.raio_be.raio_be.exception.CategoriaNotFoundException;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.repository.CategoriaRepository;
 import com.raio_be.raio_be.util.SimpleSanitizer;
@@ -42,7 +43,7 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public Categoria updateCategoria(Long id, Categoria categoria) {
         if (!categoriaRepository.existsById(id)) {
-            return null;
+            throw new CategoriaNotFoundException(id);
         }
         categoria.setId(id);
         categoria = sanitizeCategoriaFields(categoria);
@@ -51,6 +52,9 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public void deleteCategoria(Long id) {
+        if (!categoriaRepository.existsById(id)) {
+            throw new CategoriaNotFoundException(id);
+        }
         categoriaRepository.deleteById(id);
     }
 }
