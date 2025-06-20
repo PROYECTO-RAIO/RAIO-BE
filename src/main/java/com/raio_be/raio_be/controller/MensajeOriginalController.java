@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.raio_be.raio_be.DTO.MensajeOriginalDTO;
+import com.raio_be.raio_be.exception.MensajeOriginalNotFoundException;
 import com.raio_be.raio_be.mapper.MensajeOriginalMapper;
 import com.raio_be.raio_be.model.MensajeOriginal;
 import com.raio_be.raio_be.service.MensajeOriginalService;
@@ -40,7 +41,7 @@ public class MensajeOriginalController {
     public MensajeOriginalDTO getMensajeOriginalById(@PathVariable Long id) {
         return mensajeOriginalService.getMensajeOriginalById(id)
                 .map(MensajeOriginalMapper::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new MensajeOriginalNotFoundException(id));
     }
 
     @PostMapping()

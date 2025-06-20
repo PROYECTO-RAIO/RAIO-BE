@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.raio_be.raio_be.DTO.MensajeReverberadoDTO;
+import com.raio_be.raio_be.exception.CategoriaNotFoundException;
+import com.raio_be.raio_be.exception.MensajeOriginalNotFoundException;
+import com.raio_be.raio_be.exception.MensajeReverberadoNotFoundException;
 import com.raio_be.raio_be.mapper.MensajeReverberadoMapper;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.model.MensajeOriginal;
@@ -27,10 +30,10 @@ public class MensajeReverberadoImpl implements MensajeReverberadoService {
 
   private MensajeReverberado toEntity(MensajeReverberadoDTO dto) {
     MensajeOriginal mensajeOriginal = mensajeOriginalRepository.findById(dto.getMensajeOriginal())
-        .orElseThrow(() -> new RuntimeException("Mensaje original no encontrado"));
+        .orElseThrow(() -> new MensajeOriginalNotFoundException(dto.getMensajeOriginal()));
 
     Categoria categoria = categoriaRepository.findById(dto.getCategoria())
-        .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+        .orElseThrow(() -> new CategoriaNotFoundException(dto.getCategoria()));
 
     return MensajeReverberado.builder()
         .id(dto.getId())
@@ -60,19 +63,19 @@ public class MensajeReverberadoImpl implements MensajeReverberadoService {
   @Override
   public MensajeReverberadoDTO getMensajeReverberadoById(Integer id) {
     MensajeReverberado mensajeReverberado = mensajeReverberadoRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        .orElseThrow(() -> new MensajeReverberadoNotFoundException(id));
     return MensajeReverberadoMapper.toDto(mensajeReverberado);
   }
 
   @Override
   public MensajeReverberadoDTO updateMensajeReverberado(Integer id, MensajeReverberadoDTO mensajeReverberadoDTO) {
     MensajeReverberado existingMensajeReverberado = mensajeReverberadoRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        .orElseThrow(() -> new MensajeReverberadoNotFoundException(id));
     MensajeOriginal mensajeOriginal = mensajeOriginalRepository.findById(mensajeReverberadoDTO.getMensajeOriginal())
-        .orElseThrow(() -> new RuntimeException("Mensaje original no encontrado"));
+        .orElseThrow(() -> new MensajeOriginalNotFoundException(mensajeReverberadoDTO.getMensajeOriginal()));
 
     Categoria categoria = categoriaRepository.findById(mensajeReverberadoDTO.getCategoria())
-        .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+        .orElseThrow(() -> new CategoriaNotFoundException(mensajeReverberadoDTO.getCategoria()));
 
     existingMensajeReverberado.setAsunto(mensajeReverberadoDTO.getAsunto());
     existingMensajeReverberado.setAutor(mensajeReverberadoDTO.getAutor());
@@ -89,7 +92,7 @@ public class MensajeReverberadoImpl implements MensajeReverberadoService {
   @Override
   public void deleteMensajeReverberado(Integer id) {
     if (!mensajeReverberadoRepository.existsById(id)) {
-      throw new RuntimeException("Mensaje no encontrado");
+      throw new MensajeReverberadoNotFoundException(id);
     }
     mensajeReverberadoRepository.deleteById(id);
   }

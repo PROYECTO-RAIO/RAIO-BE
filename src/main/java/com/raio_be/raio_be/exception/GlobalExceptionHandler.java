@@ -52,6 +52,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(MensajeOriginalNotFoundException.class)
+    public ResponseEntity<ApiError> handleMensajeOriginalNotFound(MensajeOriginalNotFoundException ex) {
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(MensajeReverberadoNotFoundException.class)
+    public ResponseEntity<ApiError> handleMensajeReverberadoNotFound(MensajeReverberadoNotFoundException ex) {
+        ApiError error = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
     private ResponseEntity<ApiError> buildResponse(HttpStatus status, String message) {
         ApiError error = ApiError.builder()
                 .status(status)
