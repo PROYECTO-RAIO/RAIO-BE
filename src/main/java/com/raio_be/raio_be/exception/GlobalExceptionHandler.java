@@ -11,43 +11,47 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiError> handleResourceNotFound(ResourceNotFoundException ex) {
-        ApiError error = ApiError.builder()
-            .status(HttpStatus.NOT_FOUND)
-            .message(ex.getMessage())
-            .timestamp(LocalDateTime.now())
-            .build();
-        return new ResponseEntity<>(error, error.getStatus());
+    public ResponseEntity<ApiError> handleNotFound(ResourceNotFoundException ex) {
+        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ApiError> handleIllegalArgument(IllegalArgumentException ex) {
-        ApiError error = ApiError.builder()
-            .status(HttpStatus.BAD_REQUEST)
-            .message(ex.getMessage())
-            .timestamp(LocalDateTime.now())
-            .build();
-        return new ResponseEntity<>(error, error.getStatus());
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiError> handleAuthentication(AuthenticationException ex) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ApiError> handleBadRequest(BadRequestException ex) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ApiError> handleConflict(ConflictException ex) {
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidQueryParamException.class)
+    public ResponseEntity<ApiError> handleInvalidQuery(InvalidQueryParamException ex) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiError> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
         String msg = "Parámetro inválido: " + ex.getName();
-        ApiError error = ApiError.builder()
-            .status(HttpStatus.BAD_REQUEST)
-            .message(msg)
-            .timestamp(LocalDateTime.now())
-            .build();
-        return new ResponseEntity<>(error, error.getStatus());
+        return buildResponse(HttpStatus.BAD_REQUEST, msg);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleGeneral(Exception ex) {
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Error inesperado: " + ex.getMessage());
+    }
+
+    private ResponseEntity<ApiError> buildResponse(HttpStatus status, String message) {
         ApiError error = ApiError.builder()
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .message("Error inesperado: " + ex.getMessage())
+            .status(status)
+            .message(message)
             .timestamp(LocalDateTime.now())
             .build();
-        return new ResponseEntity<>(error, error.getStatus());
+        return new ResponseEntity<>(error, status);
     }
 }
