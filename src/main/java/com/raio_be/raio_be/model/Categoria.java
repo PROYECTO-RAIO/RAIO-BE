@@ -30,7 +30,7 @@ public class Categoria {
 
     @Column(name = "mensajes_reverberados")
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference(value = "categoria-mensajesReverberados")
     private List<MensajeReverberado> mensajesReverberados;
 
     @Size(max = 50)

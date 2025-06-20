@@ -60,12 +60,13 @@ public class MensajeReverberado {
 
   @ManyToOne
   @JoinColumn(name = "mensaje_original", nullable = false)
+  @JsonBackReference(value = "mensajeOriginal-mensajesReverberados")
   @NotNull(message = "Debe especificar el ID del mensaje original")
   private MensajeOriginal mensajeOriginal;
 
  @ManyToOne
   @JoinColumn(name = "categoria", nullable = false)
   @NotNull(message = "Debe especificar una categoría")
-  @JsonBackReference
+  @JsonBackReference(value = "categoria-mensajesReverberados")
   private Categoria categoria;
 }
