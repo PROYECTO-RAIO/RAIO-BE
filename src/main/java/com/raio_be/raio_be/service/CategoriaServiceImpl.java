@@ -1,6 +1,7 @@
 package com.raio_be.raio_be.service;
 
 import com.raio_be.raio_be.exception.CategoriaNotFoundException;
+import com.raio_be.raio_be.exception.ConflictException;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.repository.CategoriaRepository;
 import com.raio_be.raio_be.util.SimpleSanitizer;
@@ -37,7 +38,11 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public Categoria saveCategoria(Categoria categoria) {
         categoria = sanitizeCategoriaFields(categoria);
-        return categoriaRepository.save(categoria);
+
+    if (categoriaRepository.existsByTituloCategoria(categoria.getTituloCategoria())) {
+        throw new ConflictException("Ya existe una categoría con ese título.");
+    }
+    return categoriaRepository.save(categoria);
     }
 
     @Override
@@ -45,6 +50,9 @@ public class CategoriaServiceImpl implements CategoriaService {
         if (!categoriaRepository.existsById(id)) {
             throw new CategoriaNotFoundException(id);
         }
+         if (categoriaRepository.existsByTituloCategoria(categoria.getTituloCategoria())) {
+        throw new ConflictException("Ya existe una categoría con ese título.");
+    }
         categoria.setId(id);
         categoria = sanitizeCategoriaFields(categoria);
         return categoriaRepository.save(categoria);
