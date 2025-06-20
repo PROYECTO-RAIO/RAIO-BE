@@ -3,6 +3,8 @@ package com.raio_be.raio_be.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,6 +42,7 @@ public class MensajeOriginal {
     @Column
     private String adjuntoMensajeOriginal;
     @Column
+    @CreationTimestamp
     private Timestamp timestamp;
     @Column(name = "mensajesReverberados")
     @OneToMany(mappedBy = "mensajeOriginal", cascade = CascadeType.ALL)

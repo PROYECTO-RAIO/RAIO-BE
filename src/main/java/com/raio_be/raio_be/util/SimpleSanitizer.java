@@ -11,4 +11,14 @@ public class SimpleSanitizer {
             .replace("'", "&#x27;")
             .replace("/", "&#x2F;");
     }
+    public static String desanitize(String input) {
+        if (input == null) return null;
+        return input
+            .replace("&#x2F;", "/")
+            .replace("&#x27;", "'")
+            .replace("&quot;", "\"")
+            .replace("&gt;", ">")
+            .replace("&lt;", "<")
+            .replace("&amp;", "&");
+    }
 }

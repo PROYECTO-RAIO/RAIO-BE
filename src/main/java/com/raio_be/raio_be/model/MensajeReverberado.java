@@ -2,6 +2,8 @@ package com.raio_be.raio_be.model;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -11,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -53,6 +54,7 @@ public class MensajeReverberado {
   @NotBlank(message = "El adjunto no puede estar vacío")
   private String adjunto;
 
+  @CreationTimestamp
   @Column(nullable = false, updatable = false)
   private LocalDateTime timestamp;
 
@@ -61,7 +63,7 @@ public class MensajeReverberado {
   @NotNull(message = "Debe especificar el ID del mensaje original")
   private MensajeOriginal mensajeOriginal;
 
-  @OneToOne(optional = false)
+ @ManyToOne
   @JoinColumn(name = "categoria", nullable = false)
   @NotNull(message = "Debe especificar una categoría")
   @JsonBackReference
