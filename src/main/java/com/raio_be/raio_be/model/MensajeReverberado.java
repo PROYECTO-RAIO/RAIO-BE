@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "mensaje_reverberado")
+@Table(name = "mensajes_reverberados")
 @Getter
 @Setter
 @NoArgsConstructor

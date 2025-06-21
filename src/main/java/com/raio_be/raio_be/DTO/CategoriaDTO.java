@@ -5,7 +5,6 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.raio_be.raio_be.model.MensajeReverberado;
 
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Email;
@@ -19,11 +18,8 @@ import jakarta.validation.constraints.Pattern;
 @Data
 public class CategoriaDTO {
     private Long id;
-
-    private List<MensajeReverberado> mensajesReverberados;
-
-    @NotBlank(message = "El título es obligatorio")
-    @Size(max = 50, message = "El título no puede tener más de 50 caracteres")
+    private List<MensajeReverberadoDTO> mensajesReverberados; 
+/*     @NotBlank */
     private String tituloCategoria;
 
     @Size(max = 1000, message = "La descripción no puede tener más de 1000 caracteres")

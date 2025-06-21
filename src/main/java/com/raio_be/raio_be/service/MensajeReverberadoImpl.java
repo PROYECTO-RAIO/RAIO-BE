@@ -11,11 +11,9 @@ import com.raio_be.raio_be.exception.CategoriaNotFoundException;
 import com.raio_be.raio_be.exception.MensajeOriginalNotFoundException;
 import com.raio_be.raio_be.exception.MensajeReverberadoNotFoundException;
 import com.raio_be.raio_be.mapper.MensajeReverberadoMapper;
-import com.raio_be.raio_be.model.Categoria;
-import com.raio_be.raio_be.model.MensajeOriginal;
+
 import com.raio_be.raio_be.model.MensajeReverberado;
-import com.raio_be.raio_be.repository.CategoriaRepository;
-import com.raio_be.raio_be.repository.MensajeOriginalRepository;
+
 import com.raio_be.raio_be.repository.MensajeReverberadoRepository;
 
 @Service
@@ -23,33 +21,12 @@ public class MensajeReverberadoImpl implements MensajeReverberadoService {
 
   @Autowired
   private MensajeReverberadoRepository mensajeReverberadoRepository;
-  @Autowired
-  private CategoriaRepository categoriaRepository;
-  @Autowired
-  private MensajeOriginalRepository mensajeOriginalRepository;
+  private MensajeReverberadoMapper mensajeReverberadoMapper;
 
-  private MensajeReverberado toEntity(MensajeReverberadoDTO dto) {
-    MensajeOriginal mensajeOriginal = mensajeOriginalRepository.findById(dto.getMensajeOriginal())
-        .orElseThrow(() -> new MensajeOriginalNotFoundException(dto.getMensajeOriginal()));
-
-    Categoria categoria = categoriaRepository.findById(dto.getCategoria())
-        .orElseThrow(() -> new CategoriaNotFoundException(dto.getCategoria()));
-
-    return MensajeReverberado.builder()
-        .id(dto.getId())
-        .asunto(dto.getAsunto())
-        .autor(dto.getAutor())
-        .cuerpo(dto.getCuerpo())
-        .adjunto(dto.getAdjunto())
-        .timestamp(dto.getTimestamp())
-        .mensajeOriginal(mensajeOriginal)
-        .categoria(categoria)
-        .build();
-  }
-
+ 
   @Override
   public MensajeReverberadoDTO createMensajeReverberado(MensajeReverberadoDTO mensajeReverberadoDTO) {
-    MensajeReverberado mensajeReverberado = toEntity(mensajeReverberadoDTO);
+    MensajeReverberado mensajeReverberado = mensajeReverberadoMapper.toEntity(mensajeReverberadoDTO);
     MensajeReverberado savedMensajeReverberado = mensajeReverberadoRepository.save(mensajeReverberado);
     return MensajeReverberadoMapper.toDto(savedMensajeReverberado);
   }
@@ -68,25 +45,15 @@ public class MensajeReverberadoImpl implements MensajeReverberadoService {
   }
 
   @Override
-  public MensajeReverberadoDTO updateMensajeReverberado(Integer id, MensajeReverberadoDTO mensajeReverberadoDTO) {
-    MensajeReverberado existingMensajeReverberado = mensajeReverberadoRepository.findById(id)
-        .orElseThrow(() -> new MensajeReverberadoNotFoundException(id));
-    MensajeOriginal mensajeOriginal = mensajeOriginalRepository.findById(mensajeReverberadoDTO.getMensajeOriginal())
-        .orElseThrow(() -> new MensajeOriginalNotFoundException(mensajeReverberadoDTO.getMensajeOriginal()));
+  public MensajeReverberadoDTO updateMensajeReverberado(Integer id, MensajeReverberadoDTO dto) {
+    MensajeReverberado existing = mensajeReverberadoRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
 
-    Categoria categoria = categoriaRepository.findById(mensajeReverberadoDTO.getCategoria())
-        .orElseThrow(() -> new CategoriaNotFoundException(mensajeReverberadoDTO.getCategoria()));
+    MensajeReverberado actualizado = mensajeReverberadoMapper.toEntity(dto);
+    actualizado.setId(existing.getId()); // para asegurarte que se actualiza el mismo registro
 
-    existingMensajeReverberado.setAsunto(mensajeReverberadoDTO.getAsunto());
-    existingMensajeReverberado.setAutor(mensajeReverberadoDTO.getAutor());
-    existingMensajeReverberado.setCuerpo(mensajeReverberadoDTO.getCuerpo());
-    existingMensajeReverberado.setAdjunto(mensajeReverberadoDTO.getAdjunto());
-    existingMensajeReverberado.setTimestamp(mensajeReverberadoDTO.getTimestamp());
-    existingMensajeReverberado.setMensajeOriginal(mensajeOriginal);
-    existingMensajeReverberado.setCategoria(categoria);
-
-    MensajeReverberado updatedMensajeReverberado = mensajeReverberadoRepository.save(existingMensajeReverberado);
-    return MensajeReverberadoMapper.toDto(updatedMensajeReverberado);
+    MensajeReverberado saved = mensajeReverberadoRepository.save(actualizado);
+    return mensajeReverberadoMapper.toDto(saved);
   }
 
   @Override
