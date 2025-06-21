@@ -60,6 +60,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(CategoryHasReverbsException.class)
+    public ResponseEntity<ApiError> handleCategoryHasReverbs(CategoryHasReverbsException ex) {  
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
     @ExceptionHandler(MensajeReverberadoNotFoundException.class)
     public ResponseEntity<ApiError> handleMensajeReverberadoNotFound(MensajeReverberadoNotFoundException ex) {
         ApiError error = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());

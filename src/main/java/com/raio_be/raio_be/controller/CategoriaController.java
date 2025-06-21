@@ -5,11 +5,12 @@ import com.raio_be.raio_be.exception.CategoriaNotFoundException;
 import com.raio_be.raio_be.mapper.CategoriaMapper;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.service.CategoriaService;
+import com.raio_be.raio_be.exception.CategoryHasReverbsException;
 
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -52,8 +53,12 @@ public class CategoriaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCategoria(@PathVariable Long id) {
-        categoriaService.deleteCategoria(id);
-        return ResponseEntity.ok(Map.of("mensaje", "Categoría con ID " + id + " eliminada correctamente"));
+    public void deleteCategoria(@PathVariable Long id) {
+    try {categoriaService.deleteCategoria(id);
+    }
+    catch (DataIntegrityViolationException e) {
+        throw new CategoryHasReverbsException("No se puede eliminar la categoría porque tiene reverberaciones asociadas.\nPuedes cambiar su estado a inactivo.");
     }
 }
+}
+
