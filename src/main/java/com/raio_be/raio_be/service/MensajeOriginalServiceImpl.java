@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.raio_be.raio_be.exception.MensajeOriginalNotFoundException;
+import com.raio_be.raio_be.exception.ResourceNotFoundException;
 import com.raio_be.raio_be.model.MensajeOriginal;
 import com.raio_be.raio_be.repository.CategoriaRepository;
 import com.raio_be.raio_be.repository.MensajeOriginalRepository;
@@ -24,7 +25,11 @@ public class MensajeOriginalServiceImpl implements MensajeOriginalService {
 
     @Override
     public List<MensajeOriginal> getAllMensajeOriginal() {
-        return mensajeOriginalRepository.findAll();
+        List<MensajeOriginal> mensajes = mensajeOriginalRepository.findAll();
+        if (mensajes.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron mensajes.");
+        }
+        return mensajes;
     }
 
     @Override

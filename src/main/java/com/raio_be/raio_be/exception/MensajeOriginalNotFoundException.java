@@ -1,4 +1,3 @@
-// MensajeOriginalNotFoundException.java
 package com.raio_be.raio_be.exception;
 
 public class MensajeOriginalNotFoundException extends RuntimeException {

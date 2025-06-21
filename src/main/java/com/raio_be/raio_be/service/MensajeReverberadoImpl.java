@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.raio_be.raio_be.DTO.MensajeReverberadoDTO;
-import com.raio_be.raio_be.exception.CategoriaNotFoundException;
-import com.raio_be.raio_be.exception.MensajeOriginalNotFoundException;
 import com.raio_be.raio_be.exception.MensajeReverberadoNotFoundException;
 import com.raio_be.raio_be.mapper.MensajeReverberadoMapper;
 
@@ -23,7 +21,6 @@ public class MensajeReverberadoImpl implements MensajeReverberadoService {
   private MensajeReverberadoRepository mensajeReverberadoRepository;
   private MensajeReverberadoMapper mensajeReverberadoMapper;
 
- 
   @Override
   public MensajeReverberadoDTO createMensajeReverberado(MensajeReverberadoDTO mensajeReverberadoDTO) {
     MensajeReverberado mensajeReverberado = mensajeReverberadoMapper.toEntity(mensajeReverberadoDTO);
@@ -47,13 +44,13 @@ public class MensajeReverberadoImpl implements MensajeReverberadoService {
   @Override
   public MensajeReverberadoDTO updateMensajeReverberado(Integer id, MensajeReverberadoDTO dto) {
     MensajeReverberado existing = mensajeReverberadoRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Mensaje no encontrado"));
+        .orElseThrow(() -> new MensajeReverberadoNotFoundException(id));
 
     MensajeReverberado actualizado = mensajeReverberadoMapper.toEntity(dto);
-    actualizado.setId(existing.getId()); // para asegurarte que se actualiza el mismo registro
+    actualizado.setId(existing.getId());
 
     MensajeReverberado saved = mensajeReverberadoRepository.save(actualizado);
-    return mensajeReverberadoMapper.toDto(saved);
+    return MensajeReverberadoMapper.toDto(saved);
   }
 
   @Override

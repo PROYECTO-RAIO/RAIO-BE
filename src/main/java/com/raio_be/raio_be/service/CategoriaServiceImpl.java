@@ -39,23 +39,34 @@ public class CategoriaServiceImpl implements CategoriaService {
     public Categoria saveCategoria(Categoria categoria) {
         categoria = sanitizeCategoriaFields(categoria);
 
-    if (categoriaRepository.existsByTituloCategoria(categoria.getTituloCategoria())) {
-        throw new ConflictException("Ya existe una categoría con ese título.");
-    }
-    return categoriaRepository.save(categoria);
+        Optional<Categoria> existente = categoriaRepository.findByTituloCategoria(categoria.getTituloCategoria());
+
+        if (existente.isPresent() && !existente.get().getId().equals(categoria.getId())) {
+            throw new ConflictException("Ya existe una categoría con ese título.");
+        }
+
+        return categoriaRepository.save(categoria);
     }
 
     @Override
-    public Categoria updateCategoria(Long id, Categoria categoria) {
-        if (!categoriaRepository.existsById(id)) {
-            throw new CategoriaNotFoundException(id);
+    public Categoria updateCategoria(Long id, Categoria categoriaActualizada) {
+        categoriaActualizada = sanitizeCategoriaFields(categoriaActualizada);
+
+        Categoria existente = categoriaRepository.findById(id)
+                .orElseThrow(() -> new CategoriaNotFoundException(id));
+
+        Optional<Categoria> categoriaConMismoTitulo = categoriaRepository
+                .findByTituloCategoria(categoriaActualizada.getTituloCategoria());
+
+        if (categoriaConMismoTitulo.isPresent() && !categoriaConMismoTitulo.get().getId().equals(id)) {
+            throw new ConflictException("Ya existe otra categoría con ese título.");
         }
-         if (categoriaRepository.existsByTituloCategoria(categoria.getTituloCategoria())) {
-        throw new ConflictException("Ya existe una categoría con ese título.");
-    }
-        categoria.setId(id);
-        categoria = sanitizeCategoriaFields(categoria);
-        return categoriaRepository.save(categoria);
+
+        existente.setTituloCategoria(categoriaActualizada.getTituloCategoria());
+        existente.setAutorCategoria(categoriaActualizada.getAutorCategoria());
+        existente.setDescripcionCategoria(categoriaActualizada.getDescripcionCategoria());
+
+        return categoriaRepository.save(existente);
     }
 
     @Override

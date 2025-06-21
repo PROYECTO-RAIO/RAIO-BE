@@ -19,7 +19,9 @@ import jakarta.validation.constraints.Pattern;
 public class CategoriaDTO {
     private Long id;
     private List<MensajeReverberadoDTO> mensajesReverberados; 
-/*     @NotBlank */
+
+    @NotBlank(message = "El título de la categoría es obligatorio")
+    @Size(max = 50, message = "El título no puede tener más de 100 caracteres")
     private String tituloCategoria;
 
     @Size(max = 1000, message = "La descripción no puede tener más de 1000 caracteres")
