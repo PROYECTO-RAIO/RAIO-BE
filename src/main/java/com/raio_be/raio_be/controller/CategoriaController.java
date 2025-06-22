@@ -1,13 +1,16 @@
 package com.raio_be.raio_be.controller;
 
 import com.raio_be.raio_be.DTO.CategoriaDTO;
+import com.raio_be.raio_be.exception.CategoriaNotFoundException;
 import com.raio_be.raio_be.mapper.CategoriaMapper;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.service.CategoriaService;
+import com.raio_be.raio_be.exception.CategoryHasReverbsException;
 
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,9 +33,9 @@ public class CategoriaController {
 
     @GetMapping("/{id}")
     public CategoriaDTO getCategoriaById(@PathVariable Long id) {
-        return categoriaService.getCategoriaById(id)
-                .map(CategoriaMapper::toDto)
-                .orElse(null);
+        Categoria categoria = categoriaService.getCategoriaById(id)
+        .orElseThrow(() -> new CategoriaNotFoundException(id));
+    return CategoriaMapper.toDto(categoria);
     }
 
     @PostMapping
@@ -50,6 +53,11 @@ public class CategoriaController {
 
     @DeleteMapping("/{id}")
     public void deleteCategoria(@PathVariable Long id) {
-        categoriaService.deleteCategoria(id);
+    try {categoriaService.deleteCategoria(id);
+    }
+    catch (DataIntegrityViolationException e) {
+        throw new CategoryHasReverbsException("No se puede eliminar la categoría porque tiene reverberaciones asociadas.\nPuedes cambiar su estado a inactivo.");
     }
 }
+}
+
