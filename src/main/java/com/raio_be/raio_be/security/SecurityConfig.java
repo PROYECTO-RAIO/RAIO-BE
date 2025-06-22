@@ -17,14 +17,16 @@ import com.raio_be.raio_be.security.manager.CustomAuthenticationManager;
 public class SecurityConfig {
 
     private final CustomAuthenticationManager customAuthenticationManager;
+    private final SecurityConstants securityConstants;
 
-    public SecurityConfig(CustomAuthenticationManager customAuthenticationManager){
+    public SecurityConfig(CustomAuthenticationManager customAuthenticationManager, SecurityConstants securityConstants){
         this.customAuthenticationManager = customAuthenticationManager;
+        this.securityConstants = securityConstants;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter(customAuthenticationManager);
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+        JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter(customAuthenticationManager, securityConstants);
         authenticationFilter.setFilterProcessesUrl("/api/v1/admin/login");
 
         http
@@ -48,7 +50,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
             )
             .addFilter(authenticationFilter)
-            .addFilterAfter(new JWTAuthorizationFilter(), JWTAuthenticationFilter.class)
+            .addFilterAfter(new JWTAuthorizationFilter(securityConstants), JWTAuthenticationFilter.class)
             .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();

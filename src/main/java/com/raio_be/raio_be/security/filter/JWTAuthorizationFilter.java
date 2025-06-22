@@ -20,6 +20,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
+    private final SecurityConstants securityConstants;
+
+    public JWTAuthorizationFilter(SecurityConstants securityConstants) {
+        this.securityConstants = securityConstants;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, 
                                     FilterChain filterChain) throws ServletException, IOException {
@@ -33,7 +39,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         String token = header.replace("Bearer ", "");
 
         try {
-            String email = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET))
+            String email = JWT.require(Algorithm.HMAC512(securityConstants.getSecret()))
                     .build()
                     .verify(token)
                     .getSubject();

@@ -14,6 +14,8 @@ public class RaioBeApplication {
 		System.setProperty("SPRING_DATASOURCE_URL", dotenv.get("SPRING_DATASOURCE_URL"));
 		System.setProperty("SPRING_DATASOURCE_USERNAME", dotenv.get("SPRING_DATASOURCE_USERNAME"));
 		System.setProperty("SPRING_DATASOURCE_PASSWORD", dotenv.get("SPRING_DATASOURCE_PASSWORD"));
+		System.setProperty
+		("JWT_SECRET_KEY", dotenv.get("JWT_SECRET_KEY"));
 		
 		SpringApplication.run(RaioBeApplication.class, args);
 		System.out.println("Se ha iniciado con éxito.");

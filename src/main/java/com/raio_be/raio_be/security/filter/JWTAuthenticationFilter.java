@@ -23,16 +23,17 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final CustomAuthenticationManager customAuthenticationManager;
+    private final SecurityConstants securityConstants;
 
-    public JWTAuthenticationFilter(CustomAuthenticationManager customAuthenticationManager){
+    public JWTAuthenticationFilter(CustomAuthenticationManager customAuthenticationManager, SecurityConstants securityConstants) {
         this.customAuthenticationManager = customAuthenticationManager;
+        this.securityConstants = securityConstants;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         try {
-            // Read email and contraseña from the JSON request
             Admin admin = new ObjectMapper().readValue(request.getInputStream(), Admin.class);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     admin.getEmail(),
@@ -51,7 +52,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = JWT.create()
                 .withSubject(authResult.getName()) 
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
-                .sign(Algorithm.HMAC512(SecurityConstants.SECRET));
+                .sign(Algorithm.HMAC512(securityConstants.getSecret()));
         response.addHeader("Authorization", "Bearer " + token);
         response.getWriter().write("{\"token\": \"" + token + "\"}");
         response.getWriter().flush();
