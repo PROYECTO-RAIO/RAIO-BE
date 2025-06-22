@@ -8,7 +8,6 @@ import java.util.List;
 
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
@@ -44,10 +43,8 @@ public class CategoriaDTO {
 
     private boolean temporalidad;
 
-    @FutureOrPresent(message = "La fecha de inicio no puede ser en el pasado")
     private LocalDate fechaInicio;
 
-    @FutureOrPresent(message = "La fecha final no puede ser en el pasado")
     private LocalDate fechaFinal;
 
     @Email(message = "Debe ser un email válido")
