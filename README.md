@@ -34,7 +34,7 @@ A configurar en `application.properties` o archivo `.env` externo:
 DB_URL=jdbc:postgresql://localhost:54**/raio
 DB_USERNAME=usuarie
 DB_PASSWORD=contraseña
-JWT_SECRET=clave_segura
+JWT_SECRET_KEY=clave_segura
 
 ---
 
