@@ -28,12 +28,6 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "*")
 
 public class AdminController {
-    // @Autowired
-    // private AdminService adminService;
-    // @Autowired
-    // private AdminRepository adminRepository;
-    // @Autowired
-    // private TokenService tokenService;
 
         private final AdminService adminService;
         private final AdminRepository adminRepository;
@@ -103,11 +97,4 @@ public class AdminController {
     }
     }
 
-//         @Autowired
-//         private PasswordEncoder passwordEncoder;
-
-//     public AdminController(AdminService adminService, PasswordEncoder passwordEncoder) {
-//         this.adminService = adminService;
-//         this.passwordEncoder = passwordEncoder;
-// }
 }

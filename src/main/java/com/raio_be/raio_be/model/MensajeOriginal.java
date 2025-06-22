@@ -50,5 +50,4 @@ public class MensajeOriginal {
     @OneToMany(mappedBy = "mensajeOriginal", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "mensajeOriginal-mensajesReverberados")
     private List<MensajeReverberado> mensajesReverberados;
-
 }
