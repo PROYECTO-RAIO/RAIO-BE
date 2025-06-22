@@ -25,10 +25,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter(customAuthenticationManager);
-        authenticationFilter.setFilterProcessesUrl("/api/v1/auth/login");
+        authenticationFilter.setFilterProcessesUrl("/api/v1/admin/login");
 
         http
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
+            .cors(cors -> {})
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(request -> request
                 // Public endpoints
