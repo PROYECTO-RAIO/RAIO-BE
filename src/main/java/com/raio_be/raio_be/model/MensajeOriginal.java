@@ -3,6 +3,10 @@ package com.raio_be.raio_be.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,18 +35,19 @@ public class MensajeOriginal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String asuntoMensajeOriginal;
-    @Column
+
     private String autorMensajeOriginal;
-    @Column
+
     private String cuerpoMensajeOriginal;
-    @Column
+
     private String adjuntoMensajeOriginal;
-    @Column
+
+    @CreationTimestamp
     private Timestamp timestamp;
+
     @Column(name = "mensajesReverberados")
     @OneToMany(mappedBy = "mensajeOriginal", cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "mensajeOriginal-mensajesReverberados")
     private List<MensajeReverberado> mensajesReverberados;
-
 }

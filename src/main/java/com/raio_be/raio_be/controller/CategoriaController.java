@@ -1,13 +1,17 @@
 package com.raio_be.raio_be.controller;
 
 import com.raio_be.raio_be.DTO.CategoriaDTO;
+import com.raio_be.raio_be.exception.CategoriaNotFoundException;
 import com.raio_be.raio_be.mapper.CategoriaMapper;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.service.CategoriaService;
+import com.raio_be.raio_be.exception.CategoryHasReverbsException;
+import com.raio_be.raio_be.exception.InvalidCategoryDateException;
 
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,14 +34,20 @@ public class CategoriaController {
 
     @GetMapping("/{id}")
     public CategoriaDTO getCategoriaById(@PathVariable Long id) {
-        return categoriaService.getCategoriaById(id)
-                .map(CategoriaMapper::toDto)
-                .orElse(null);
+        Categoria categoria = categoriaService.getCategoriaById(id)
+        .orElseThrow(() -> new CategoriaNotFoundException(id));
+    return CategoriaMapper.toDto(categoria);
     }
 
     @PostMapping
     public CategoriaDTO saveCategoria(@Valid @RequestBody CategoriaDTO dto) {
         Categoria categoria = CategoriaMapper.toEntity(dto);
+        if (dto.getFechaInicio() != null && dto.getFechaInicio().isBefore(java.time.LocalDate.now())) {
+        throw new InvalidCategoryDateException("La fecha de inicio no puede ser en el pasado");
+    }
+    if (dto.getFechaFinal() != null && dto.getFechaFinal().isBefore(java.time.LocalDate.now())) {
+        throw new InvalidCategoryDateException("La fecha final no puede ser en el pasado");
+    }
         Categoria save = categoriaService.saveCategoria(categoria);
         return CategoriaMapper.toDto(save);
     }
@@ -50,6 +60,11 @@ public class CategoriaController {
 
     @DeleteMapping("/{id}")
     public void deleteCategoria(@PathVariable Long id) {
-        categoriaService.deleteCategoria(id);
+    try {categoriaService.deleteCategoria(id);
+    }
+    catch (DataIntegrityViolationException e) {
+        throw new CategoryHasReverbsException("No se puede eliminar la categoría porque tiene reverberaciones asociadas.\nPuedes cambiar su estado a inactivo.");
     }
 }
+}
+

@@ -14,11 +14,18 @@ import lombok.NoArgsConstructor;
 public class MensajeReverberadoDTO {
 
   private Integer id;
+  
   private String asunto;
+  
   private String autor;
+  
   private String cuerpo;
+  
   private String adjunto;
+  
   private LocalDateTime timestamp;
+  
   private Long mensajeOriginal;
+  
   private Long categoria;
 }

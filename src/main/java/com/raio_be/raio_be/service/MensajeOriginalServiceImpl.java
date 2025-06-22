@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.raio_be.raio_be.exception.MensajeOriginalNotFoundException;
+import com.raio_be.raio_be.exception.ResourceNotFoundException;
 import com.raio_be.raio_be.model.MensajeOriginal;
 import com.raio_be.raio_be.repository.CategoriaRepository;
 import com.raio_be.raio_be.repository.MensajeOriginalRepository;
@@ -23,7 +25,11 @@ public class MensajeOriginalServiceImpl implements MensajeOriginalService {
 
     @Override
     public List<MensajeOriginal> getAllMensajeOriginal() {
-        return mensajeOriginalRepository.findAll();
+        List<MensajeOriginal> mensajes = mensajeOriginalRepository.findAll();
+        if (mensajes.isEmpty()) {
+            throw new ResourceNotFoundException("No se encontraron mensajes.");
+        }
+        return mensajes;
     }
 
     @Override
@@ -39,7 +45,7 @@ public class MensajeOriginalServiceImpl implements MensajeOriginalService {
     @Override
     public MensajeOriginal updateMensajeOriginal(Long id, MensajeOriginal mensajeOriginal) {
         if (!mensajeOriginalRepository.existsById(id)) {
-            return null;
+            throw new MensajeOriginalNotFoundException(id);
         }
         mensajeOriginal.setId(id);
         return mensajeOriginalRepository.save(mensajeOriginal);
@@ -47,6 +53,9 @@ public class MensajeOriginalServiceImpl implements MensajeOriginalService {
 
     @Override
     public void deleteMensajeOriginal(Long id) {
+        if (!mensajeOriginalRepository.existsById(id)) {
+            throw new MensajeOriginalNotFoundException(id);
+        }
         mensajeOriginalRepository.deleteById(id);
     }
 }

@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
+@Table(name = "admins")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,12 +29,10 @@ public class Admin {
 
   @Column(nullable = false)
   @NotBlank(message = "El nombre de usuarie no puede estar vacío")
-  @Size(min = 3, max = 10, message = "El nombre de usuarie debe tener entre 3 y 10 caracteres")
   private String nombreUsuarie;
 
   @Column(nullable = false)
   @NotBlank(message = "La contraseña no puede estar vacía")
-  @Size(min = 8, max = 12, message = "La contraseña debe tener entre 8 y 12 caracteres")
   private String contraseña;
 
   @Column(nullable = false)

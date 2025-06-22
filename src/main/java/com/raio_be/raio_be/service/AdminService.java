@@ -18,5 +18,6 @@ public interface AdminService {
     AdminDTO updateAdmin(Integer id, AdminDTO adminDTO);
 
     void deleteAdmin(Integer id);
-    
+
+    AdminDTO getAdminByEmail(String email);
 } 
