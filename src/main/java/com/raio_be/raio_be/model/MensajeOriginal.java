@@ -35,17 +35,17 @@ public class MensajeOriginal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String asuntoMensajeOriginal;
-    @Column
+
     private String autorMensajeOriginal;
-    @Column
+
     private String cuerpoMensajeOriginal;
-    @Column
+
     private String adjuntoMensajeOriginal;
-    @Column
+
     @CreationTimestamp
     private Timestamp timestamp;
+
     @Column(name = "mensajesReverberados")
     @OneToMany(mappedBy = "mensajeOriginal", cascade = CascadeType.ALL)
     @JsonManagedReference(value = "mensajeOriginal-mensajesReverberados")
