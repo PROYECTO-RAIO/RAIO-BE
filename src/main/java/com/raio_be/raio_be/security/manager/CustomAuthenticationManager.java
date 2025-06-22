@@ -40,23 +40,4 @@ public Authentication authenticate(Authentication authentication) throws Authent
         Collections.singletonList(new SimpleGrantedAuthority("USER"))
     );
 }
-    //CODE con contraseñas encrytadas
-    // @Override
-    // public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-    //     String email = authentication.getName(); 
-    //     String rawPassword = authentication.getCredentials().toString();
-
-    //     AdminDTO admin = adminService.getAdminByEmail(email);
-    //     if (!bCryptPasswordEncoder.matches(rawPassword, admin.getContraseña())) {
-    //         throw new BadCredentialsException("Contraseña incorrecta");
-    //     }
-
-    //     return new UsernamePasswordAuthenticationToken(
-    //         email,
-    //         admin.getContraseña(),
-    //         Collections.singletonList(new SimpleGrantedAuthority("USER"))
-    //     );
-    // }
-
-
 }

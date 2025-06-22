@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/v1/categorias/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/admins/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/admins").permitAll() 
-                
+
                 .requestMatchers("/api/v1/mensajes-originales/**").permitAll()
                 .requestMatchers("/api/v1/mensajes-reverberados/**").permitAll()
 
@@ -54,40 +54,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-        
-        
-        //TRIAL - Remove all atuth
-        // return http
-        // .csrf(csrf -> csrf.disable())
-        // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-        // .build();
-
-        //OLD CODE - bit problematic
-        // JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter(customAuthenticationManager);
-        // authenticationFilter.setFilterProcessesUrl("/api/v1/admins/login");
-
-        // http
-        //     .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
-        //     .csrf(csrf -> csrf.disable())
-            // .authorizeHttpRequests(request -> request
-            //     //Temporarily allow post new admin - ELIMINAR MÁS TARDE
-            //      .requestMatchers(HttpMethod.POST, "/api/v1/admins").permitAll()
-            //      .requestMatchers(HttpMethod.POST, "/api/v1/admins/**").permitAll()
-
-            //     // H2 Console
-            //     .requestMatchers("/h2/**").permitAll()
-
-            //     // Public GET endpoints
-            //     .requestMatchers(HttpMethod.GET, "/api/v1/categorias/**").permitAll()
-
-            //     // Public login endpoint
-            //     .requestMatchers(HttpMethod.POST, "/api/v1/admins/login").permitAll()
-
-            //     // Any other request (including POST/PUT/DELETE) requires authentication
-            //     .anyRequest().authenticated()
-    //         )
-    //         .addFilter(authenticationFilter)
-    //         .addFilterAfter(new JWTAuthorizationFilter(), JWTAuthenticationFilter.class)
-    //         .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-    // return http.build();    
-    // }

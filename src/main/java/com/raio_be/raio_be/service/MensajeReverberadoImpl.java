@@ -61,5 +61,4 @@ public class MensajeReverberadoImpl implements MensajeReverberadoService {
     }
     mensajeReverberadoRepository.deleteById(id);
   }
-
 }
