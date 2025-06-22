@@ -50,5 +50,4 @@ public class MensajeReverberadoMapper {
         .categoria(categoria)
         .build();
   }
-
 }
