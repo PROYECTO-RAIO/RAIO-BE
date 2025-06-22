@@ -21,9 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
-
 @RestController
 @RequestMapping("/api/v1/mensajes-originales")
 public class MensajeOriginalController {
@@ -56,14 +53,12 @@ public class MensajeOriginalController {
     @PutMapping("/{id}")
     public MensajeOriginalDTO updateMensajeOriginal(@PathVariable Long id, @RequestBody MensajeOriginalDTO dto) {
         MensajeOriginal update = mensajeOriginalService.updateMensajeOriginal(id, MensajeOriginalMapper.toEntity(dto));
-        return update != null ? MensajeOriginalMapper.toDto(update) : null;
-        
+        return update != null ? MensajeOriginalMapper.toDto(update) : null;   
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteMensajeOriginal(@PathVariable Long id) {
         mensajeOriginalService.deleteMensajeOriginal(id);
         return ResponseEntity.ok(Map.of("mensaje", "Mensaje original con ID " + id + " eliminado correctamente"));
-    }
-    
+    }   
 }

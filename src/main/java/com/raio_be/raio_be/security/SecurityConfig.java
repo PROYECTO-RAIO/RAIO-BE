@@ -32,12 +32,12 @@ public class SecurityConfig {
             .cors(cors -> {})
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(request -> request
-                // Public endpoints
+
                 .requestMatchers("/h2/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/categorias/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/admins/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/v1/admins").permitAll() // Temporary: registration
-
+                .requestMatchers(HttpMethod.POST, "/api/v1/admins").permitAll() 
+                
                 .requestMatchers("/api/v1/mensajes-originales/**").permitAll()
                 .requestMatchers("/api/v1/mensajes-reverberados/**").permitAll()
 
