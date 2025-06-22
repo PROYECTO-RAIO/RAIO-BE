@@ -6,6 +6,7 @@ import com.raio_be.raio_be.mapper.CategoriaMapper;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.service.CategoriaService;
 import com.raio_be.raio_be.exception.CategoryHasReverbsException;
+import com.raio_be.raio_be.exception.InvalidCategoryDateException;
 
 import jakarta.validation.Valid;
 
@@ -41,6 +42,12 @@ public class CategoriaController {
     @PostMapping
     public CategoriaDTO saveCategoria(@Valid @RequestBody CategoriaDTO dto) {
         Categoria categoria = CategoriaMapper.toEntity(dto);
+        if (dto.getFechaInicio() != null && dto.getFechaInicio().isBefore(java.time.LocalDate.now())) {
+        throw new InvalidCategoryDateException("La fecha de inicio no puede ser en el pasado");
+    }
+    if (dto.getFechaFinal() != null && dto.getFechaFinal().isBefore(java.time.LocalDate.now())) {
+        throw new InvalidCategoryDateException("La fecha final no puede ser en el pasado");
+    }
         Categoria save = categoriaService.saveCategoria(categoria);
         return CategoriaMapper.toDto(save);
     }

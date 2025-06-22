@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CategoryHasReverbsException.class)
-    public ResponseEntity<ApiError> handleCategoryHasReverbs(CategoryHasReverbsException ex) {  
+    public ResponseEntity<ApiError> handleCategoryHasReverbs(CategoryHasReverbsException ex) {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
@@ -82,6 +82,11 @@ public class GlobalExceptionHandler {
         String message = String.join("; ", errors);
 
         return buildResponse(HttpStatus.BAD_REQUEST, message);
+    }
+
+    @ExceptionHandler(InvalidCategoryDateException.class)
+    public ResponseEntity<ApiError> handleInvalidCategoryDate(InvalidCategoryDateException ex) {
+        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     private ResponseEntity<ApiError> buildResponse(HttpStatus status, String message) {

@@ -1,9 +1,9 @@
 package com.raio_be.raio_be.service;
 
+import com.raio_be.raio_be.exception.ConflictException;
 import com.raio_be.raio_be.model.Categoria;
 import com.raio_be.raio_be.repository.CategoriaRepository;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +13,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -29,11 +28,6 @@ class CategoriaServiceImplTest {
 
     @InjectMocks
     private CategoriaServiceImpl categoriaService;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void testGetAllCategorias() {
@@ -51,10 +45,12 @@ class CategoriaServiceImplTest {
 
         assertEquals(2, categorias.size());
         assertEquals("Primera", categorias.get(0).getTituloCategoria());
+
+        verify(categoriaRepository).findAll();
     }
 
     @Test
-    void testGetCategoriaById() {
+    void testGetCategoriaById_whenExists() {
         Categoria cat = new Categoria();
         cat.setId(1L);
         cat.setTituloCategoria("Única");
@@ -65,27 +61,34 @@ class CategoriaServiceImplTest {
 
         assertTrue(result.isPresent());
         assertEquals("Única", result.get().getTituloCategoria());
+
+        verify(categoriaRepository).findById(1L);
     }
 
     @Test
-    void testGetCategoriaByIdNotFound() {
+    void testGetCategoriaById_whenNotFound() {
         when(categoriaRepository.findById(999L)).thenReturn(Optional.empty());
 
         Optional<Categoria> result = categoriaService.getCategoriaById(999L);
 
         assertFalse(result.isPresent());
+
+        verify(categoriaRepository).findById(999L);
     }
 
     @Test
     void testSaveCategoria_withValidFields() {
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(10);
+
         Categoria categoria = Categoria.builder()
                 .tituloCategoria("Título válido")
                 .autorCategoria("Autor válido")
                 .descripcionCategoria("Descripción válida")
                 .autorEmailCategoria("autor@email.com")
                 .estadoDeActividad(true)
-                .fechaInicio(LocalDate.now().plusDays(1))
-                .fechaFinal(LocalDate.now().plusDays(10))
+                .fechaInicio(startDate)
+                .fechaFinal(endDate)
                 .build();
 
         Categoria savedCategoria = Categoria.builder()
@@ -95,8 +98,8 @@ class CategoriaServiceImplTest {
                 .descripcionCategoria("Descripción válida")
                 .autorEmailCategoria("autor@email.com")
                 .estadoDeActividad(true)
-                .fechaInicio(LocalDate.now().plusDays(1))
-                .fechaFinal(LocalDate.now().plusDays(10))
+                .fechaInicio(startDate)
+                .fechaFinal(endDate)
                 .build();
 
         when(categoriaRepository.save(any(Categoria.class))).thenReturn(savedCategoria);
@@ -105,84 +108,103 @@ class CategoriaServiceImplTest {
 
         assertNotNull(result);
         assertEquals(1L, result.getId());
+        assertEquals("Título válido", result.getTituloCategoria());
+
         verify(categoriaRepository).save(any(Categoria.class));
     }
 
     @Test
     void testUpdateCategoria_withValidFields() {
         Long id = 2L;
-        Categoria input = Categoria.builder()
+
+        Categoria categoriaActualizada = Categoria.builder()
                 .tituloCategoria("Nuevo título")
                 .autorCategoria("Nuevo autor")
                 .descripcionCategoria("Nueva descripción")
-                .autorEmailCategoria("nuevo@email.com")
-                .estadoDeActividad(false)
-                .fechaInicio(LocalDate.now().plusDays(2))
-                .fechaFinal(LocalDate.now().plusDays(5))
                 .build();
 
-        Categoria updated = Categoria.builder()
+        Categoria existente = Categoria.builder()
+                .id(id)
+                .tituloCategoria("Título viejo")
+                .autorCategoria("Autor viejo")
+                .descripcionCategoria("Descripción vieja")
+                .build();
+
+        Categoria guardada = Categoria.builder()
                 .id(id)
                 .tituloCategoria("Nuevo título")
                 .autorCategoria("Nuevo autor")
                 .descripcionCategoria("Nueva descripción")
-                .autorEmailCategoria("nuevo@email.com")
-                .estadoDeActividad(false)
-                .fechaInicio(LocalDate.now().plusDays(2))
-                .fechaFinal(LocalDate.now().plusDays(5))
                 .build();
 
-        when(categoriaRepository.existsById(id)).thenReturn(true);
-        when(categoriaRepository.save(any(Categoria.class))).thenReturn(updated);
+        when(categoriaRepository.findById(id)).thenReturn(Optional.of(existente));
 
-        Categoria result = categoriaService.updateCategoria(id, input);
+        when(categoriaRepository.findByTituloCategoria("Nuevo título"))
+                .thenReturn(Optional.of(guardada));
+
+        when(categoriaRepository.save(any(Categoria.class))).thenReturn(guardada);
+
+        Categoria result = categoriaService.updateCategoria(id, categoriaActualizada);
 
         assertNotNull(result);
         assertEquals(id, result.getId());
         assertEquals("Nuevo título", result.getTituloCategoria());
-        assertEquals("nuevo@email.com", result.getAutorEmailCategoria());
-    }
+        assertEquals("Nuevo autor", result.getAutorCategoria());
+        assertEquals("Nueva descripción", result.getDescripcionCategoria());
 
-    @Test
-    void testGetCategoriaById_whenExists() {
-        Long id = 1L;
-        Categoria categoria = Categoria.builder()
-                .id(id)
-                .tituloCategoria("Ejemplo")
-                .autorEmailCategoria("ejemplo@email.com")
-                .estadoDeActividad(true)
-                .fechaInicio(LocalDate.now().plusDays(1))
-                .fechaFinal(LocalDate.now().plusDays(2))
-                .build();
-
-        when(categoriaRepository.findById(id)).thenReturn(Optional.of(categoria));
-
-        Optional<Categoria> result = categoriaService.getCategoriaById(id);
-
-        assertTrue(result.isPresent());
-        assertEquals("Ejemplo", result.get().getTituloCategoria());
-    }
-
-    @Test
-    void testGetCategoriaById_whenNotExists() {
-        Long id = 999L;
-
-        when(categoriaRepository.findById(id)).thenReturn(Optional.empty());
-
-        Optional<Categoria> result = categoriaService.getCategoriaById(id);
-
-        assertFalse(result.isPresent());
+        verify(categoriaRepository).findById(id);
+        verify(categoriaRepository).findByTituloCategoria("Nuevo título");
+        verify(categoriaRepository).save(any(Categoria.class));
     }
 
     @Test
     void testDeleteCategoriaById() {
         Long id = 3L;
 
+        when(categoriaRepository.existsById(id)).thenReturn(true);
         doNothing().when(categoriaRepository).deleteById(id);
 
         categoriaService.deleteCategoria(id);
 
+        verify(categoriaRepository).existsById(id);
         verify(categoriaRepository).deleteById(id);
     }
 
+    @Test
+    void testUpdateCategoria_withTituloConflict_throwsConflictException() {
+        Long id = 2L;
+
+        Categoria categoriaActualizada = Categoria.builder()
+                .tituloCategoria("Título en conflicto")
+                .autorCategoria("Nuevo autor")
+                .descripcionCategoria("Nueva descripción")
+                .build();
+
+        Categoria existente = Categoria.builder()
+                .id(id)
+                .tituloCategoria("Título viejo")
+                .autorCategoria("Autor viejo")
+                .descripcionCategoria("Descripción vieja")
+                .build();
+
+        Categoria otraCategoriaConMismoTitulo = Categoria.builder()
+                .id(99L) // distinto ID para simular conflicto
+                .tituloCategoria("Título en conflicto")
+                .build();
+
+        when(categoriaRepository.findById(id)).thenReturn(Optional.of(existente));
+
+        when(categoriaRepository.findByTituloCategoria("Título en conflicto"))
+                .thenReturn(Optional.of(otraCategoriaConMismoTitulo));
+
+        ConflictException thrown = assertThrows(
+                ConflictException.class,
+                () -> categoriaService.updateCategoria(id, categoriaActualizada));
+
+        assertEquals("Ya existe otra categoría con ese título.", thrown.getMessage());
+
+        verify(categoriaRepository).findById(id);
+        verify(categoriaRepository).findByTituloCategoria("Título en conflicto");
+        verify(categoriaRepository, never()).save(any(Categoria.class));
+    }
 }
